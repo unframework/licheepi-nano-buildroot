@@ -13,6 +13,7 @@ VM_CORES=1
 
 Vagrant.configure('2') do |config|
   config.vm.box = 'ubuntu/bionic64'
+  config.disksize.size = '50GB'
 
   config.vm.provider :vmware_fusion do |v, override|
     v.vmx['memsize'] = VM_MEMORY
@@ -23,7 +24,7 @@ Vagrant.configure('2') do |config|
     v.memory = VM_MEMORY
     v.cpus = VM_CORES
 
-    required_plugins = %w( vagrant-vbguest )
+    required_plugins = %w( vagrant-vbguest vagrant-disksize )
     required_plugins.each do |plugin|
       system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
     end
