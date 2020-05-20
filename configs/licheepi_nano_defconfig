@@ -450,7 +450,7 @@ BR2_ROOTFS_USERS_TABLES=""
 BR2_ROOTFS_OVERLAY=""
 BR2_ROOTFS_POST_BUILD_SCRIPT=""
 BR2_ROOTFS_POST_FAKEROOT_SCRIPT=""
-BR2_ROOTFS_POST_IMAGE_SCRIPT=""
+BR2_ROOTFS_POST_IMAGE_SCRIPT="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/post-image.sh"
 
 #
 # Kernel
@@ -2205,35 +2205,35 @@ BR2_PACKAGE_MONGREL2_LIBC_SUPPORTS=y
 #
 
 #
-# Please note:                                           
+# Please note:
 #
 
 #
-# - Buildroot does *not* generate binary packages,       
+# - Buildroot does *not* generate binary packages,
 #
 
 #
-# - Buildroot does *not* install any package database.   
+# - Buildroot does *not* install any package database.
 #
 
 #
-# *                                                      
+# *
 #
 
 #
-# It is up to you to provide those by yourself if you    
+# It is up to you to provide those by yourself if you
 #
 
 #
-# want to use any of those package managers.             
+# want to use any of those package managers.
 #
 
 #
-# *                                                      
+# *
 #
 
 #
-# See the manual:                                        
+# See the manual:
 #
 
 #
