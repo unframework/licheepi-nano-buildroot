@@ -83,6 +83,7 @@ BR2_TARGET_UBOOT_BOOT_SCRIPT=y
 BR2_TARGET_UBOOT_BOOT_SCRIPT_SOURCE="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/boot.cmd"
 
 #
-# Extra host dependency to build images
+# Extra host dependencies to build images
 #
 BR2_PACKAGE_HOST_GENIMAGE=y
+BR2_PACKAGE_HOST_MTOOLS=y
