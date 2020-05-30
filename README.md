@@ -67,3 +67,7 @@ sudo dd if=output/images/sdcard.img of=DEVICE # e.g. /dev/sd?, etc
 ```
 
 On Windows, Rufus or Balena Etcher can be used, or another utility like that.
+
+## LCD Screen Support
+
+This build includes a DTS file that supports a 480x272 TFT screen (plugged into the 40-pin flex-PCB connector on the board). The custom kernel branch also includes a DTS file with support for 800x480 TFT resolution: use `suniv-f1c100s-licheepi-nano` name for the DTS file, and update `boot.cmd` and `genimage.cfg` to reference that device tree as well.
