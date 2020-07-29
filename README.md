@@ -8,6 +8,8 @@ This repository contains a Buildroot config extension that allows all of those b
 
 This heavily borrows from the work done by the FunKey Zero project: https://github.com/Squonk42/buildroot-licheepi-zero/. That repo targets Lichee Pi Zero, a sibling board to the Nano, but I was able to adapt it for use with the latter, and also converted the content to be a `BR2_EXTERNAL` extension rather than a full Buildroot fork.
 
+There was reasonable effort to keep config files readable, e.g. here is the main Buildroot defconfig file: [configs/licheepi_nano_defconfig](configs/licheepi_nano_defconfig).
+
 ## Dependencies
 
 - Vagrant (if building inside the VM)
