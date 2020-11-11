@@ -6,9 +6,11 @@
 
 This repository contains a Buildroot config extension that allows all of those build steps to be handled via a single Buildroot `make` command. That means fully building the U-Boot image, Linux kernel, the rootfs image and the final partitioned binary image for flashing onto the bootable SD card (SPI-Flash support is possible but not handled here yet).
 
-This heavily borrows from the work done by the FunKey Zero project: https://github.com/Squonk42/buildroot-licheepi-zero/. That repo targets Lichee Pi Zero, a sibling board to the Nano, but I was able to adapt it for use with the latter, and also converted the content to be a `BR2_EXTERNAL` extension rather than a full Buildroot fork.
+All the configuration is packaged as a `BR2_EXTERNAL` Buildroot extension to avoid the need to fork the entire Buildroot repo. You can fork this project or integrate it as a Git subtree to customize your own OS build on top of it as needed.
 
-There was reasonable effort to keep config files readable, e.g. here is the main Buildroot defconfig file: [configs/licheepi_nano_defconfig](configs/licheepi_nano_defconfig).
+This effort heavily borrowed from the work done by the FunKey Zero project: https://github.com/Squonk42/buildroot-licheepi-zero/. The latter targets Lichee Pi Zero, a sibling board to the Nano, but I was able to adapt it for use with Nano, and also converted the content to be a `BR2_EXTERNAL` extension rather than a full Buildroot fork.
+
+The config files should be reasonably readable, e.g. here is the main Buildroot defconfig file: [configs/licheepi_nano_defconfig](configs/licheepi_nano_defconfig).
 
 ## Dependencies
 
