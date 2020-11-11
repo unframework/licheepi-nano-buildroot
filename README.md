@@ -25,6 +25,10 @@ Buildroot takes care of downloading any further dependencies automatically.
 If performing the build inside the VM:
 
 ```sh
+# install required plugins
+vagrant plugin install vagrant-vbguest
+vagrant plugin install vagrant-disksize
+
 vagrant up
 vagrant ssh
 ```

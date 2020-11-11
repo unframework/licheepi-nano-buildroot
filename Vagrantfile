@@ -23,11 +23,6 @@ Vagrant.configure('2') do |config|
   config.vm.provider :virtualbox do |v, override|
     v.memory = VM_MEMORY
     v.cpus = VM_CORES
-
-    required_plugins = %w( vagrant-vbguest vagrant-disksize )
-    required_plugins.each do |plugin|
-      system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
-    end
   end
 
   config.vm.provision 'shell' do |s|
