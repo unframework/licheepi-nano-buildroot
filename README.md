@@ -71,7 +71,7 @@ Then, generate initial build configuration:
 BR2_EXTERNAL=/vagrant make licheepi_nano_defconfig
 ```
 
-Customize Buildroot configuration if needed:
+The above generates a `.config` file in the Buildroot checkout folder - this is the build configuration for `make` later on. Customize it if needed:
 
 ```sh
 make menuconfig
