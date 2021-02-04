@@ -30,6 +30,12 @@ First, clone this repo:
 git clone git@github.com:unframework/licheepi-nano-buildroot.git
 ```
 
+If not using Vagrant, ensure build scripts are executable:
+
+```sh
+chmod a+x licheepi-nano-buildroot/board/licheepi_nano/*.sh
+```
+
 If using Vagrant VM to perform the build:
 
 ```sh
