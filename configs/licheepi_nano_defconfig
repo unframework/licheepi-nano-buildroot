@@ -82,8 +82,16 @@ BR2_ROOTFS_POST_IMAGE_SCRIPT="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_
 BR2_TARGET_UBOOT=y
 BR2_TARGET_UBOOT_BOARDNAME="licheepi_nano"
 BR2_TARGET_UBOOT_CUSTOM_GIT=y
-BR2_TARGET_UBOOT_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/u-boot"
-BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="nano-v2018.01"
+
+# @unframework U-Boot fork and branch
+# (rebased from @Icenowy U-Boot fork f1c100s-spiflash branch as of 2021-03-06)
+BR2_TARGET_UBOOT_CUSTOM_REPO_URL="https://github.com/unframework/u-boot"
+BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="icenowy-f1c100s-spiflash"
+
+# original Lichee-Pi U-Boot fork and branch
+# BR2_TARGET_UBOOT_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/u-boot"
+# BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="nano-v2018.01"
+
 BR2_TARGET_UBOOT_NEEDS_DTC=y
 BR2_TARGET_UBOOT_NEEDS_PYLIBFDT=y
 
