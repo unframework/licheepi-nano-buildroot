@@ -42,8 +42,16 @@ BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200=y
 #
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_GIT=y
-BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/linux"
-BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="nano-5.2-tf"
+
+# @unframework Linux fork and branch
+# (cherry-picked from Lichee-Pi Linux fork nano-5.2-flash branch as of 2021-03-06)
+BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/unframework/linux"
+BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="nano-5.11"
+
+# original Lichee-Pi Linux fork and branch without Flash-specific config changes
+# BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/linux"
+# BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="nano-5.2-tf"
+
 BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
 BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/licheepi_nano_linux_defconfig"
 
