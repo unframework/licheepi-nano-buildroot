@@ -39,7 +39,6 @@ BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200=y
 
 #
 # Linux kernel customized for the board
-# (and specifying the 480x272 LCD driver in device tree)
 #
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_GIT=y
@@ -47,7 +46,11 @@ BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/linux"
 BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="nano-5.2-tf"
 BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
 BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/licheepi_nano_linux_defconfig"
+
+# original Lichee-Pi Linux fork provided defconfig
 # BR2_LINUX_KERNEL_DEFCONFIG="licheepi_nano"
+
+# custom DTS file with 480x272 LCD driver settings
 BR2_LINUX_KERNEL_DTS_SUPPORT=y
 BR2_LINUX_KERNEL_CUSTOM_DTS_PATH="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/suniv-f1c100s-licheepi-nano-lcd480.dts"
 

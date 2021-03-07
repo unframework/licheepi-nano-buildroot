@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR X11)
+// based on https://github.com/Lichee-Pi/linux/blob/nano-5.2-tf/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts on 2020-05
 /*
  * Copyright 2018 Icenowy Zheng <icenowy@aosc.io>
  */
