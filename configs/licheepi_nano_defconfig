@@ -85,12 +85,12 @@ BR2_TARGET_UBOOT_CUSTOM_GIT=y
 
 # @unframework U-Boot fork and tag
 # (rebased from @Icenowy U-Boot fork f1c100s-spiflash branch as of 2021-03-06, plus others)
-BR2_TARGET_UBOOT_CUSTOM_REPO_URL="https://github.com/unframework/u-boot"
-BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="v2021.01-f1c100s-1"
+# BR2_TARGET_UBOOT_CUSTOM_REPO_URL="https://github.com/unframework/u-boot"
+# BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="v2021.01-f1c100s-1"
 
 # original Lichee-Pi U-Boot fork and branch
-# BR2_TARGET_UBOOT_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/u-boot"
-# BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="nano-v2018.01"
+BR2_TARGET_UBOOT_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/u-boot"
+BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="nano-v2018.01"
 
 BR2_TARGET_UBOOT_NEEDS_DTC=y
 BR2_TARGET_UBOOT_NEEDS_PYLIBFDT=y
