@@ -54,7 +54,7 @@ Otherwise, download Buildroot and extract it into a folder that is separate from
 Before building, install these Ubuntu packages:
 
 ```sh
-sudo apt-get install swig fakeroot devscripts python3-dev python3-distutils
+sudo apt-get install swig fakeroot devscripts python3-dev python3-distutils libssl-dev
 ```
 
 If there are still error messages during later build, try installing these (sorry, did not clean up the list yet, some might be unnecessary):
