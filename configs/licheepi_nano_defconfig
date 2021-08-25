@@ -24,8 +24,7 @@ BR2_ENABLE_DEBUG=y
 # Internal Buildroot toolchain, with headers matching custom kernel
 #
 BR2_TOOLCHAIN_BUILDROOT_GLIBC=y
-BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_2=y
-# BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_4=y
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_4=y
 BR2_PACKAGE_GLIBC_UTILS=y
 BR2_TOOLCHAIN_BUILDROOT_CXX=y
 
@@ -46,12 +45,12 @@ BR2_LINUX_KERNEL_CUSTOM_GIT=y
 
 # @unframework Linux fork and branch
 # (cherry-picked from Lichee-Pi Linux fork nano-5.2-flash branch as of 2021-03-06)
-# BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/unframework/linux"
-# BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="v5.11-nano-1"
+BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/unframework/linux"
+BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="v5.11-nano-1"
 
 # original Lichee-Pi Linux fork and branch without Flash-specific config changes
-BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/linux"
-BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="nano-5.2-tf"
+# BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/linux"
+# BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="nano-5.2-tf"
 
 BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
 BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/licheepi_nano_linux_defconfig"
