@@ -101,6 +101,12 @@ sudo dd if=YOUR_HOST_FOLDER/sdcard.img of=DEVICE # e.g. /dev/sd?, etc
 
 On Windows, Rufus or Balena Etcher can be used, or another utility like that.
 
+## Linux and U-Boot Versions
+
+The built kernel is [a Linux fork based off 5.11](https://github.com/unframework/linux/commits/nano-5.11), with hardware-vendor-specific customizations. I have cherry-picked the original customizations from `Lichee-Pi/linux` repo [nano-5.2-tf branch](https://github.com/torvalds/linux/compare/master...Lichee-Pi:nano-5.2-tf) and [nano-5.2-flash branch](https://github.com/torvalds/linux/compare/master...Lichee-Pi:nano-5.2-flash) (both based right off version 5.2) and added tiny fixes due to newer kernel version.
+
+The built U-Boot is [a v2018.01 fork](https://github.com/Lichee-Pi/u-boot/commits/nano-v2018.01) with vendor-specific customizations. There is [an earlier repo with same customizations](https://github.com/u-boot/u-boot/compare/master...Icenowy:f1c100s-spiflash) that that fork is based on. I have attempted to [cherry-pick those customizations onto U-Boot v2021.01](https://github.com/unframework/u-boot) but could not get that to boot yet.
+
 ## LCD Screen Support
 
 This build includes a customized DTS file that supports a 480x272 TFT screen (plugged into the 40-pin flex-PCB connector on the board). The source kernel branch comes with a pre-existing DTS file with support for 800x480 TFT resolution: in `menuconfig` change to use "in-tree" `suniv-f1c100s-licheepi-nano` DTS file, and update `boot.cmd` and `genimage.cfg` to reference that device tree as well.

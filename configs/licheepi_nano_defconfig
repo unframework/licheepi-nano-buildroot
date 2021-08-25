@@ -24,7 +24,7 @@ BR2_ENABLE_DEBUG=y
 # Internal Buildroot toolchain, with headers matching custom kernel
 #
 BR2_TOOLCHAIN_BUILDROOT_GLIBC=y
-BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_2=y
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_4=y
 BR2_PACKAGE_GLIBC_UTILS=y
 BR2_TOOLCHAIN_BUILDROOT_CXX=y
 
@@ -39,15 +39,26 @@ BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200=y
 
 #
 # Linux kernel customized for the board
-# (and specifying the 480x272 LCD driver in device tree)
 #
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_GIT=y
-BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/linux"
-BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="nano-5.2-tf"
+
+# @unframework Linux fork and branch
+# (cherry-picked from Lichee-Pi Linux fork nano-5.2-flash branch as of 2021-03-06)
+BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/unframework/linux"
+BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="v5.11-nano-2"
+
+# original Lichee-Pi Linux fork and branch without Flash-specific config changes
+# BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/linux"
+# BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="nano-5.2-tf"
+
 BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
 BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/licheepi_nano_linux_defconfig"
+
+# original Lichee-Pi Linux fork provided defconfig
 # BR2_LINUX_KERNEL_DEFCONFIG="licheepi_nano"
+
+# custom DTS file with 480x272 LCD driver settings
 BR2_LINUX_KERNEL_DTS_SUPPORT=y
 BR2_LINUX_KERNEL_CUSTOM_DTS_PATH="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/suniv-f1c100s-licheepi-nano-lcd480.dts"
 
@@ -71,8 +82,16 @@ BR2_ROOTFS_POST_IMAGE_SCRIPT="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_
 BR2_TARGET_UBOOT=y
 BR2_TARGET_UBOOT_BOARDNAME="licheepi_nano"
 BR2_TARGET_UBOOT_CUSTOM_GIT=y
+
+# @unframework U-Boot fork and tag
+# (rebased from @Icenowy U-Boot fork f1c100s-spiflash branch as of 2021-03-06, plus others)
+# BR2_TARGET_UBOOT_CUSTOM_REPO_URL="https://github.com/unframework/u-boot"
+# BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="v2021.01-f1c100s-2"
+
+# original Lichee-Pi U-Boot fork and branch
 BR2_TARGET_UBOOT_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/u-boot"
 BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="nano-v2018.01"
+
 BR2_TARGET_UBOOT_NEEDS_DTC=y
 BR2_TARGET_UBOOT_NEEDS_PYLIBFDT=y
 
