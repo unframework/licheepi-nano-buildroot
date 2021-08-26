@@ -103,9 +103,9 @@ On Windows, Rufus or Balena Etcher can be used, or another utility like that.
 
 ## Linux and U-Boot Versions
 
-The built kernel is [a Linux fork based off 5.11](https://github.com/unframework/linux/commits/nano-5.11), with hardware-vendor-specific customizations. I have cherry-picked the original customizations from `Lichee-Pi/linux` repo [nano-5.2-tf branch](https://github.com/torvalds/linux/compare/master...Lichee-Pi:nano-5.2-tf) and [nano-5.2-flash branch](https://github.com/torvalds/linux/compare/master...Lichee-Pi:nano-5.2-flash) (both based right off version 5.2) and added tiny fixes due to newer kernel version.
+The built kernel is [a Linux fork based off 5.11](https://github.com/unframework/linux/commits/nano-5.11), with hardware-specific customizations. I have cherry-picked the original customizations from @Lichee-Pi Linux repo [nano-5.2-tf branch](https://github.com/torvalds/linux/compare/master...Lichee-Pi:nano-5.2-tf) and [nano-5.2-flash branch](https://github.com/torvalds/linux/compare/master...Lichee-Pi:nano-5.2-flash) (both based off Linux version 5.2) and added tiny fixes due to newer kernel version.
 
-The built U-Boot is [a v2018.01 fork](https://github.com/Lichee-Pi/u-boot/commits/nano-v2018.01) with vendor-specific customizations. There is [an earlier repo with same customizations](https://github.com/u-boot/u-boot/compare/master...Icenowy:f1c100s-spiflash) that that fork is based on. I have attempted to [cherry-pick those customizations onto U-Boot v2021.01](https://github.com/unframework/u-boot) but could not get that to boot yet.
+The built U-Boot is [a fork based off v2021.01](https://github.com/unframework/u-boot/commits/2021.01-f1c100s) with hardware-specific customizations, which I ported over from [the original @Lichee-Pi v2018.01 fork](https://github.com/Lichee-Pi/u-boot/commits/nano-v2018.01) referenced in the docs. By the way, the latter is actually itself a rebase of [an earlier repo branch maintained by @Icenowy](https://github.com/u-boot/u-boot/compare/master...Icenowy:f1c100s-spiflash). Splash screen support is not yet ported.
 
 ## LCD Screen Support
 
