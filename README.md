@@ -12,6 +12,8 @@ This effort heavily borrowed from the work done by the FunKey Zero project: http
 
 The config files should be reasonably readable, e.g. here is the main Buildroot defconfig file: [configs/licheepi_nano_defconfig](configs/licheepi_nano_defconfig).
 
+Please also check out https://github.com/florpor/licheepi-nano which predates this repo but somehow I did not stumble upon until I finished my own config/porting/rebasing. Please consult that repo for possibly newer versions/patches/etc!
+
 ## Dependencies
 
 - Vagrant (if building inside the VM)
