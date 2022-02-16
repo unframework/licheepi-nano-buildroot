@@ -46,7 +46,7 @@ BR2_LINUX_KERNEL_CUSTOM_GIT=y
 # @unframework Linux fork and tag
 # (cherry-picked from Lichee-Pi Linux fork nano-5.2-flash branch as of 2021-03-06)
 BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/unframework/linux"
-BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="v5.11-nano-2"
+BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="v5.11-nano-3"
 
 # original Lichee-Pi Linux fork and branch without Flash-specific config changes
 # BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/linux"
@@ -58,9 +58,9 @@ BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/li
 # original Lichee-Pi Linux fork provided defconfig
 # BR2_LINUX_KERNEL_DEFCONFIG="licheepi_nano"
 
-# custom DTS file with 480x272 LCD driver settings
+# custom DTS file with local overrides
 BR2_LINUX_KERNEL_DTS_SUPPORT=y
-BR2_LINUX_KERNEL_CUSTOM_DTS_PATH="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/suniv-f1c100s-licheepi-nano-lcd480.dts"
+BR2_LINUX_KERNEL_CUSTOM_DTS_PATH="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/suniv-f1c100s-licheepi-nano-custom.dts"
 
 #
 # Build root FS ext2 (for TF card)
