@@ -19,9 +19,9 @@
 */
 
 /*
-// keymap for low-resolution ADC input driver
-// (different voltage levels on LRADC pins correspond to different emitted keyboard codes, up to 3 volt)
 &lradc {
+	// keymap for low-resolution ADC input driver
+	// (different voltage levels on LRADC pins correspond to different emitted keyboard codes, up to 3 volt)
 	button-200 {
 		label = "Volume Up";
 		linux,code = <KEY_VOLUMEUP>;
