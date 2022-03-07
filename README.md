@@ -10,7 +10,7 @@ All the configuration is packaged as a `BR2_EXTERNAL` Buildroot extension to avo
 
 This effort heavily borrowed from the work done by the FunKey Zero project: https://github.com/Squonk42/buildroot-licheepi-zero/. The latter targets Lichee Pi Zero, a sibling board to the Nano, but I was able to adapt it for use with Nano, and also converted the content to be a `BR2_EXTERNAL` extension rather than a full Buildroot fork.
 
-The config files should be reasonably readable, e.g. here is the main Buildroot defconfig file: [configs/licheepi_nano_defconfig](configs/licheepi_nano_defconfig).
+The config files should be reasonably readable, e.g. here is the main Buildroot defconfig file: [configs/licheepi_nano_defconfig](configs/licheepi_nano_defconfig). You will most likely need to update the Linux DTS (device tree) file to match your board usage, for which you can edit [suniv-f1c100s-licheepi-nano-custom.dts](board/licheepi_nano/suniv-f1c100s-licheepi-nano-custom.dts). Sample peripheral descriptions are listed in comments there - uncomment and modify what you need. This custom DTS file includes the original [suniv-f1c100s-licheepi-nano.dts](https://github.com/unframework/linux/blob/nano-5.11/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts) in the kernel tree, so you don't need to fork the kernel or duplicate code to make your local customizations. I may also set up an equivalent customizable U-Boot DTS file in the future.
 
 Please also check out https://github.com/florpor/licheepi-nano which predates this repo but somehow I did not stumble upon until I finished my own config/porting/rebasing. Please consult that repo for possibly newer versions/patches/etc!
 
@@ -111,4 +111,4 @@ The built U-Boot is [a fork based off v2021.01](https://github.com/unframework/u
 
 ## LCD Screen Support
 
-This build includes a customized DTS file that supports a 480x272 TFT screen (plugged into the 40-pin flex-PCB connector on the board). The source kernel branch comes with a pre-existing DTS file with support for 800x480 TFT resolution: in `menuconfig` change to use "in-tree" `suniv-f1c100s-licheepi-nano` DTS file, and update `boot.cmd` and `genimage.cfg` to reference that device tree as well.
+By default, the `suniv-f1c100s-licheepi-nano.dts` device tree expects a 800x480 TFT screen to be plugged into the 40-pin flex-PCB connector on the board. You can change this to be a 480x272 TFT screen - simply uncomment the `panel` block at line 14 in [suniv-f1c100s-licheepi-nano-custom.dts](board/licheepi_nano/suniv-f1c100s-licheepi-nano-custom.dts). This will override the `compatible` string for the driver and trigger the lower resolution (see also [original docs](http://nano.lichee.pro/build_sys/devicetree.html#lcd)).
