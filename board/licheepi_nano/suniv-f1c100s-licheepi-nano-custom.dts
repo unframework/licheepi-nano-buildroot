@@ -1,0 +1,88 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR X11)
+// based on https://github.com/Lichee-Pi/linux/blob/nano-5.2-flash/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts on 2021-08
+/*
+ * Copyright 2018 Icenowy Zheng <icenowy@aosc.io>
+ */
+
+/dts-v1/;
+#include "suniv-f1c100s-licheepi-nano.dts"
+
+/ {
+	model = "Lichee Pi Nano (Custom)";
+};
+
+/*
+&panel {
+	// override default resolution (800x480) with smaller resolution: 480x272
+	compatible = "qiaodian,qd43003c0-40", "simple-panel";
+};
+*/
+
+/*
+&lradc {
+	// keymap for low-resolution ADC input driver
+	// (pulling voltage down to different levels 0V-2V on LRADC pin causes this to emit different
+	// keyboard codes - pull pin back up to 3.3V when button is off)
+	button-200 {
+		label = "Volume Up";
+		linux,code = <KEY_VOLUMEUP>;
+		channel = <0>;
+		voltage = <200000>;
+	};
+
+	button-400 {
+		label = "Volume Down";
+		linux,code = <KEY_VOLUMEDOWN>;
+		channel = <0>;
+		voltage = <400000>;
+	};
+
+	button-600 {
+		label = "Select";
+		linux,code = <KEY_SELECT>;
+		channel = <0>;
+		voltage = <600000>;
+	};
+
+	button-800 {
+		label = "Start";
+		linux,code = <KEY_OK>;
+		channel = <0>;
+		voltage = <800000>;
+	};
+};
+*/
+
+/*
+&flash {
+	// hard-coded partition table for booting from Flash
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		partition@0 {
+			label = "u-boot";
+			reg = <0x000000 0x100000>;
+			read-only;
+		};
+
+		partition@100000 {
+			label = "dtb";
+			reg = <0x100000 0x10000>;
+			read-only;
+		};
+
+		partition@110000 {
+			label = "kernel";
+			reg = <0x110000 0x400000>;
+			read-only;
+		};
+
+		partition@520000 {
+			label = "rootfs";
+			reg = <0x510000 0xAF0000>;
+		};
+	};
+};
+*/
