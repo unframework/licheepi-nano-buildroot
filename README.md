@@ -22,7 +22,7 @@ Please also check out https://github.com/florpor/licheepi-nano which predates th
 - Ubuntu Bionic or similar (see Vagrant VM)
 - Buildroot 2020.02 (auto-downloaded by VM, otherwise see [project downloads page](https://buildroot.org/download.html))
 
-Buildroot takes care of downloading any further dependencies automatically.
+Buildroot takes care of downloading any further dependencies automatically. Please note that I tested this only on the `2020.02` version of Buildroot so far.
 
 ## Building the Image
 
@@ -51,7 +51,7 @@ vagrant up
 vagrant ssh
 ```
 
-Otherwise, download Buildroot and extract it into a folder that is separate from this repo's files.
+Otherwise, download Buildroot and extract it into a folder that is separate from this repo's files. Please note that I have not tested it with newer Buildroot versions - you will likely need to [tweak some settings](https://github.com/unframework/licheepi-nano-buildroot/issues/18).
 
 Before building, install these Ubuntu packages:
 
