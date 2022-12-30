@@ -22,7 +22,7 @@ Please also check out https://github.com/florpor/licheepi-nano which predates th
 - Ubuntu Bionic or similar (see Vagrant VM)
 - Buildroot 2020.02 (auto-downloaded by VM, otherwise see [project downloads page](https://buildroot.org/download.html))
 
-Buildroot takes care of downloading any further dependencies automatically.
+Buildroot takes care of downloading any further dependencies automatically. Please note that I tested this only on the `2020.02` version of Buildroot so far.
 
 ## Building the Image
 
@@ -51,7 +51,7 @@ vagrant up
 vagrant ssh
 ```
 
-Otherwise, download Buildroot and extract it into a folder that is separate from this repo's files.
+Otherwise, download Buildroot and extract it into a folder that is separate from this repo's files. Please note that I have not tested it with newer Buildroot versions - you will likely need to [tweak some settings](https://github.com/unframework/licheepi-nano-buildroot/issues/18).
 
 Before building, install these Ubuntu packages:
 
@@ -62,7 +62,7 @@ sudo apt-get install swig fakeroot devscripts python3-dev python3-distutils libs
 If there are still error messages during later build, try installing these (sorry, did not clean up the list yet, some might be unnecessary):
 
 ```sh
-sudo apt-get install -y chrpath gawk texinfo libsdl1.2-dev whiptail diffstat cpio libssl-dev
+sudo apt-get install -y chrpath gawk texinfo libsdl1.2-dev whiptail diffstat cpio
 ```
 
 Now, if you are using Vagrant your main Buildroot checkout will be in `/home/vagrant/buildroot-2020.02`. Note that it is not the same folder as the location of this board-specific config repo (which would be `/vagrant` if using the Vagrant VM). The Buildroot folder will be the main spot where actual compilation happens, so chdir inside it:
