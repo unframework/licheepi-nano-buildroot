@@ -62,7 +62,7 @@ sudo apt-get install swig fakeroot devscripts python3-dev python3-distutils libs
 If there are still error messages during later build, try installing these (sorry, did not clean up the list yet, some might be unnecessary):
 
 ```sh
-sudo apt-get install -y chrpath gawk texinfo libsdl1.2-dev whiptail diffstat cpio libssl-dev
+sudo apt-get install -y chrpath gawk texinfo libsdl1.2-dev whiptail diffstat cpio
 ```
 
 Now, if you are using Vagrant your main Buildroot checkout will be in `/home/vagrant/buildroot-2020.02`. Note that it is not the same folder as the location of this board-specific config repo (which would be `/vagrant` if using the Vagrant VM). The Buildroot folder will be the main spot where actual compilation happens, so chdir inside it:
