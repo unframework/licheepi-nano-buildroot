@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:18.04 AS base
 
 # Buildroot release version
 ARG BUILDROOT_RELEASE=2020.02
@@ -43,7 +43,11 @@ RUN update-locale LC_ALL=C
 WORKDIR /root/buildroot
 RUN wget -qO- http://buildroot.org/downloads/buildroot-${BUILDROOT_RELEASE}.tar.gz | tar --strip-components=1 -xz
 
+# build the cross-compilation toolchain as a separate cacheable image
+FROM base AS sdk
+
 # configure a skeleton setup for `make sdk` only at first
+# (we take special care to not include other unrelated config files)
 WORKDIR /root/licheepi-nano-sdk
 RUN echo 'name: LICHEEPI_NANO_SDK' >> external.desc
 RUN echo 'desc: LicheePi Nano SDK only' >> external.desc
