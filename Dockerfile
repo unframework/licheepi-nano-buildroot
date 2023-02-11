@@ -41,5 +41,13 @@ RUN update-locale LC_ALL=C
 WORKDIR /root/buildroot
 RUN wget -qO- http://buildroot.org/downloads/buildroot-${BUILDROOT_RELEASE}.tar.gz | tar --strip-components=1 -xz
 
-# @todo more
-RUN ["/bin/bash"]
+# configure a skeleton setup for `make sdk` only at first
+WORKDIR /root/licheepi-nano-sdk
+RUN echo 'name: LICHEEPI_NANO_SDK' >> external.desc
+RUN echo 'desc: LicheePi Nano SDK only' >> external.desc
+RUN touch external.mk Config.in
+COPY configs/platform_target.defconfig configs/licheepi_nano_sdk_defconfig configs/
+
+# compile the SDK
+WORKDIR /root/buildroot
+RUN BR2_EXTERNAL=/root/licheepi-nano-sdk make licheepi_nano_sdk_defconfig

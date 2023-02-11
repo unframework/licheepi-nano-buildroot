@@ -1,0 +1,31 @@
+#
+# This defconfig is only used as a stub to build the initial cross-compilation
+# toolchain, do not use this directly!
+#
+# Necessary options to run the `make sdk` target
+#
+
+#include "platform_target.defconfig"
+
+#
+# Debug messages for BR2 downloads
+#
+BR2_ENABLE_DEBUG=y
+
+#
+# Internal Buildroot toolchain, with headers matching custom kernel
+#
+BR2_TOOLCHAIN_BUILDROOT_GLIBC=y
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_4=y
+BR2_PACKAGE_GLIBC_UTILS=y
+BR2_TOOLCHAIN_BUILDROOT_CXX=y
+
+#
+# Disable other build options
+#
+BR2_INIT_NONE=y
+BR2_SYSTEM_BIN_SH_NONE=y
+BR2_PACKAGE_BUSYBOX=n
+BR2_PACKAGE_SKELETON_INIT_NONE=y
+BR2_PACKAGE_PROVIDES_SKELETON="skeleton-init-none"
+BR2_TARGET_ROOTFS_TAR=n
