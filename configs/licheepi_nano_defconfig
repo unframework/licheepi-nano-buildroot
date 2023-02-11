@@ -1,7 +1,23 @@
 #
-# Common base configuration
+# Main Buildroot config file for LicheePi Nano
 #
-#include "platform_target.defconfig"
+
+#
+# ARMv5 compilation target
+#
+BR2_arm=y
+BR2_ARCH="arm"
+BR2_ENDIAN="LITTLE"
+BR2_GCC_TARGET_ABI="aapcs-linux"
+BR2_GCC_TARGET_CPU="arm926ej-s"
+BR2_GCC_TARGET_FLOAT_ABI="soft"
+BR2_GCC_TARGET_MODE="arm"
+BR2_ARM_CPU_MAYBE_HAS_FPU=y
+BR2_ARM_CPU_MAYBE_HAS_VFPV2=y
+BR2_ARM_CPU_HAS_ARM=y
+BR2_ARM_CPU_HAS_THUMB=y
+BR2_ARM_CPU_ARMV5=y
+BR2_arm926t=y
 
 #
 # Debug messages for BR2 downloads

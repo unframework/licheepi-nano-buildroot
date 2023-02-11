@@ -46,7 +46,7 @@ WORKDIR /root/licheepi-nano-sdk
 RUN echo 'name: LICHEEPI_NANO_SDK' >> external.desc
 RUN echo 'desc: LicheePi Nano SDK only' >> external.desc
 RUN touch external.mk Config.in
-COPY configs/platform_target.defconfig configs/licheepi_nano_sdk_defconfig configs/
+COPY configs/licheepi_nano_sdk_defconfig configs/
 
 # compile the SDK
 WORKDIR /root/buildroot
