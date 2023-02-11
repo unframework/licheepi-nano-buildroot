@@ -38,8 +38,8 @@ RUN apt-get install -qy \
 RUN update-locale LC_ALL=C
 
 # get Buildroot image
-RUN wget -qO- http://buildroot.org/downloads/buildroot-$BUILDROOT_RELEASE.tar.gz | tar -xvz -C /root/buildroot
 WORKDIR /root/buildroot
+RUN wget -qO- http://buildroot.org/downloads/buildroot-${BUILDROOT_RELEASE}.tar.gz | tar --strip-components=1 -xz
 
 # @todo more
 RUN ["/bin/bash"]
