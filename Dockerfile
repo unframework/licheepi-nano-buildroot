@@ -11,6 +11,7 @@ RUN apt-get update
 # install build prerequisites
 RUN apt-get install -qy \
     bc \
+    bison \
     build-essential \
     bzr \
     chrpath \
@@ -19,14 +20,15 @@ RUN apt-get install -qy \
     devscripts \
     diffstat \
     fakeroot \
+    flex \
     gawk \
     git \
     libncurses5-dev \
     libssl-dev \
     locales \
-    mercurial \
     python3-dev \
     python3-distutils \
+    rsync \
     subversion \
     swig \
     texinfo \
@@ -48,6 +50,8 @@ RUN echo 'desc: LicheePi Nano SDK only' >> external.desc
 RUN touch external.mk Config.in
 COPY configs/licheepi_nano_sdk_defconfig configs/
 
-# compile the SDK
+# compile the SDK (this takes a while!)
 WORKDIR /root/buildroot
 RUN BR2_EXTERNAL=/root/licheepi-nano-sdk make licheepi_nano_sdk_defconfig
+
+RUN make sdk
