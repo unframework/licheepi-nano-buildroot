@@ -83,6 +83,14 @@ RUN BR2_EXTERNAL=/root/licheepi-nano make licheepi_nano_defconfig
 # prep the toolchain from the tarball
 RUN make toolchain
 
-# prepare for builds (broken out separately to cache more granularly)
+# prepare for builds (broken out separately to cache more granularly, especially Linux source fetch)
 RUN make linux-depends
 RUN make uboot-depends
+RUN make linux-source
+RUN make uboot-source
+
+# @todo merge with the initial setup
+RUN apt-get install -qy dosfstools
+
+# run the main build command
+RUN make
