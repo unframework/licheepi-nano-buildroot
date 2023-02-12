@@ -97,14 +97,19 @@ BR2_ROOTFS_POST_IMAGE_SCRIPT="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_
 # U-Boot customized for the board
 #
 BR2_TARGET_UBOOT=y
-BR2_TARGET_UBOOT_BOARDNAME="licheepi_nano_spiflash"
-# BR2_TARGET_UBOOT_BOARDNAME="licheepi_nano"
-BR2_TARGET_UBOOT_CUSTOM_GIT=y
+BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG=y
+BR2_TARGET_UBOOT_BOARD_DEFCONFIG="licheepi_nano"
+
+# mainline U-Boot (has support for F1C100s as of 2022)
+BR2_TARGET_UBOOT_CUSTOM_VERSION=y
+BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE="2023.01"
+
+# BR2_TARGET_UBOOT_CUSTOM_GIT=y
 
 # @unframework U-Boot fork and tag
 # (rebased from @Icenowy U-Boot fork f1c100s-spiflash branch as of 2021-03-06, plus others)
-BR2_TARGET_UBOOT_CUSTOM_REPO_URL="https://github.com/unframework/u-boot"
-BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="2f0ae2598c"
+# BR2_TARGET_UBOOT_CUSTOM_REPO_URL="https://github.com/unframework/u-boot"
+# BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="2f0ae2598c"
 # BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="v2021.01-f1c100s-4"
 
 # original Lichee-Pi U-Boot fork and branch
