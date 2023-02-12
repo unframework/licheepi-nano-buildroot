@@ -59,3 +59,23 @@ WORKDIR /root/buildroot
 RUN BR2_EXTERNAL=/root/licheepi-nano-sdk make licheepi_nano_sdk_defconfig
 
 RUN make sdk
+
+# start main build using the generated toolchain bundle
+FROM base AS main
+
+# copy over the SDK tarball (keeping the name)
+COPY --from=sdk /root/buildroot/output/images/arm-buildroot-linux-gnueabi_sdk-buildroot.tar.gz /root/
+
+# copy over the main config
+WORKDIR /root/licheepi-nano
+COPY board/ board/
+COPY configs/ configs/
+COPY \
+    Config.in \
+    external.desc \
+    external.mk \
+    ./
+
+# set up the defconfig
+WORKDIR /root/buildroot
+RUN BR2_EXTERNAL=/root/licheepi-nano make licheepi_nano_defconfig
