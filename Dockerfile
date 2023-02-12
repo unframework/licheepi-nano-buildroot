@@ -79,3 +79,10 @@ COPY \
 # set up the defconfig
 WORKDIR /root/buildroot
 RUN BR2_EXTERNAL=/root/licheepi-nano make licheepi_nano_defconfig
+
+# prep the toolchain from the tarball
+RUN make toolchain
+
+# prepare for builds (broken out separately to cache more granularly)
+RUN make linux-depends
+RUN make uboot-depends
