@@ -1,0 +1,127 @@
+#
+# Temp fork of main Buildroot config file for LicheePi Nano
+# @todo merge back with main
+#
+
+#
+# ARMv5 compilation target
+#
+BR2_arm=y
+BR2_ARCH="arm"
+BR2_ENDIAN="LITTLE"
+BR2_GCC_TARGET_ABI="aapcs-linux"
+BR2_GCC_TARGET_CPU="arm926ej-s"
+BR2_GCC_TARGET_FLOAT_ABI="soft"
+BR2_GCC_TARGET_MODE="arm"
+BR2_ARM_CPU_MAYBE_HAS_FPU=y
+BR2_ARM_CPU_MAYBE_HAS_VFPV2=y
+BR2_ARM_CPU_HAS_ARM=y
+BR2_ARM_CPU_HAS_THUMB=y
+BR2_ARM_CPU_ARMV5=y
+BR2_arm926t=y
+
+#
+# Debug messages for BR2 downloads
+#
+BR2_ENABLE_DEBUG=y
+
+#
+# Buildroot toolchain defined as external tarball
+#
+BR2_TOOLCHAIN_BUILDROOT=n
+BR2_TOOLCHAIN_EXTERNAL=y
+BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
+BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
+BR2_TOOLCHAIN_EXTERNAL_URL="file:///root/arm-buildroot-linux-gnueabi_sdk-buildroot.tar.gz"
+BR2_TOOLCHAIN_EXTERNAL_GCC_8=y
+BR2_TOOLCHAIN_EXTERNAL_HEADERS_5_4=y
+BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC=y
+BR2_TOOLCHAIN_EXTERNAL_CXX=y
+BR2_TOOLCHAIN_EXTERNAL_WCHAR=y
+BR2_TOOLCHAIN_EXTERNAL_LOCALE=y
+BR2_TOOLCHAIN_EXTERNAL_HAS_SSP=y
+
+#
+# OS name and login settings
+#
+BR2_TARGET_GENERIC_HOSTNAME="licheepi-nano"
+BR2_TARGET_GENERIC_ISSUE="Welcome to LicheePi Nano"
+BR2_TARGET_GENERIC_ROOT_PASSWD="root"
+BR2_TARGET_GENERIC_GETTY_PORT="/dev/ttyS0"
+BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200=y
+
+#
+# Linux kernel customized for the board
+# (using tarball download as it is much faster than Git)
+#
+BR2_LINUX_KERNEL=y
+BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
+# BR2_LINUX_KERNEL_CUSTOM_GIT=y
+
+# @unframework Linux fork and tag
+# (cherry-picked from Lichee-Pi Linux fork nano-5.2-flash branch as of 2021-03-06)
+BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="https://github.com/unframework/linux/archive/v5.11-nano-3/v5.11-nano-3.tar.gz"
+BR2_LINUX_KERNEL_VERSION="v5.11-nano-3"
+# BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/unframework/linux"
+# BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="v5.11-nano-3"
+
+# original Lichee-Pi Linux fork and branch without Flash-specific config changes
+# BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/linux"
+# BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="nano-5.2-tf"
+
+BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
+BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/licheepi_nano_linux_defconfig"
+
+# original Lichee-Pi Linux fork provided defconfig
+# BR2_LINUX_KERNEL_DEFCONFIG="licheepi_nano"
+
+# custom DTS file with local overrides
+BR2_LINUX_KERNEL_DTS_SUPPORT=y
+BR2_LINUX_KERNEL_CUSTOM_DTS_PATH="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/suniv-f1c100s-licheepi-nano-custom.dts"
+
+#
+# Build root FS ext2 (for TF card)
+#
+BR2_TARGET_ROOTFS_EXT2=y
+BR2_TARGET_ROOTFS_EXT2_4=y
+BR2_TARGET_ROOTFS_EXT2_SIZE="10M"
+
+# BR2_TARGET_ROOTFS_TAR is not set
+
+#
+# Package up the images for deployment to board
+#
+BR2_ROOTFS_POST_IMAGE_SCRIPT="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/post-image.sh"
+
+#
+# U-Boot customized for the board
+#
+BR2_TARGET_UBOOT=y
+BR2_TARGET_UBOOT_BOARDNAME="licheepi_nano_spiflash"
+# BR2_TARGET_UBOOT_BOARDNAME="licheepi_nano"
+BR2_TARGET_UBOOT_CUSTOM_GIT=y
+
+# @unframework U-Boot fork and tag
+# (rebased from @Icenowy U-Boot fork f1c100s-spiflash branch as of 2021-03-06, plus others)
+BR2_TARGET_UBOOT_CUSTOM_REPO_URL="https://github.com/unframework/u-boot"
+BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="2f0ae2598c"
+# BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="v2021.01-f1c100s-4"
+
+# original Lichee-Pi U-Boot fork and branch
+# BR2_TARGET_UBOOT_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/u-boot"
+# BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION="nano-v2018.01"
+
+BR2_TARGET_UBOOT_NEEDS_DTC=y
+BR2_TARGET_UBOOT_NEEDS_PYLIBFDT=y
+
+# BR2_TARGET_UBOOT_FORMAT_BIN is not set
+BR2_TARGET_UBOOT_FORMAT_CUSTOM=y
+BR2_TARGET_UBOOT_FORMAT_CUSTOM_NAME="u-boot-sunxi-with-spl.bin"
+BR2_TARGET_UBOOT_BOOT_SCRIPT=y
+BR2_TARGET_UBOOT_BOOT_SCRIPT_SOURCE="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/boot.cmd"
+
+#
+# Extra host dependencies to build images
+#
+BR2_PACKAGE_HOST_GENIMAGE=y
+BR2_PACKAGE_HOST_MTOOLS=y
