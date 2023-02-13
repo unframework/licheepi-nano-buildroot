@@ -9,6 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 
 # install build prerequisites
+# @todo remove python3-distutils after upgrading U-Boot
 RUN apt-get install -qy \
     bc \
     bison \
@@ -19,6 +20,7 @@ RUN apt-get install -qy \
     cvs \
     devscripts \
     diffstat \
+    dosfstools \
     fakeroot \
     flex \
     gawk \
@@ -28,6 +30,7 @@ RUN apt-get install -qy \
     locales \
     python3-dev \
     python3-distutils \
+    python3-setuptools \
     rsync \
     subversion \
     swig \
@@ -89,8 +92,9 @@ RUN make uboot-depends
 RUN make linux-source
 RUN make uboot-source
 
-# @todo merge with the initial setup
-RUN apt-get install -qy dosfstools
-
 # run the main build command
 RUN make
+
+# expose built image files in standalone root folder
+FROM scratch AS localout
+COPY --from=main /root/buildroot/output/images/ .
