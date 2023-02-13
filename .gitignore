@@ -1,3 +1,6 @@
+# @todo remove Vagrant ignores
 /.vagrant
 /*console.log
+
+# output folder from Docker command
 /dist
