@@ -99,8 +99,6 @@ FROM main AS localdev
 
 COPY devconfigs/ /root/licheepi-nano/configs/
 RUN BR2_EXTERNAL=/root/licheepi-nano make licheepi_nano_dev_defconfig
-RUN cd output/build/uboot-v2021.01-f1c100s-4/ && rm .stamp_configured .stamp_built .stamp_*_installed
-RUN make uboot-build
 RUN make
 
 # expose built image files in standalone root folder
