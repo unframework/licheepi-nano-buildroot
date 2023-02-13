@@ -87,8 +87,6 @@ RUN BR2_EXTERNAL=/root/licheepi-nano make licheepi_nano_defconfig
 RUN make toolchain
 
 # prepare for builds (broken out separately to cache more granularly, especially Linux source fetch)
-RUN make linux-depends
-RUN make uboot-depends
 RUN make linux-source
 RUN make uboot-source
 
