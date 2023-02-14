@@ -29,27 +29,48 @@ Buildroot takes care of downloading any further dependencies. Please note that I
 
 ## Building the Image
 
-Using Docker (on Windows/MacOS/Linux):
+The easiest way is using Docker (on Windows/MacOS/Linux).
 
-- clone this repo to your host: `git clone git@github.com:unframework/licheepi-nano-buildroot.git`
-- run the image build command: `docker build --output type=tar,dest=- . | tar x -C dist`
-    - this may take an hour depending on your host machine
-    - the built image will be available in `dist/sdcard.img`
-- if you do not have BuildKit, run: `docker build -t licheepi-nano-buildroot .`
-    - the built `licheepi-nano-buildroot` scratch image will have `sdcard.img` in the root folder
-
-Manual build (on Linux):
+First, clone this repo to your host:
 
 ```sh
-# download Buildroot and extract it to "./buildroot-2020.02"
-
-# clone this repo to your host in a separate folder than Buildroot
 git clone git@github.com:unframework/licheepi-nano-buildroot.git
+```
 
-# ensure scripts are executable
-chmod a+x licheepi-nano-buildroot/board/licheepi_nano/*.sh
+Run the image build command:
 
-# install build dependencies (Ubuntu example)
+```sh
+docker build --output type=tar,dest=- . | tar x -C dist
+```
+
+This may take an hour, depending on your host machine. The built image will be available in `dist/sdcard.img` - you can write this to your bootable micro SD card.
+
+If you do not have Docker BuildKit or if you want direct access to the workspace image (to e.g. run some extra commands in a container) then run:
+
+```ssh
+docker build --target main -t licheepi-nano-buildroot .
+```
+
+## Manual build (on Linux)
+
+This assumes you are in your home folder.
+
+[Download Buildroot](https://buildroot.org/download.html) and extract it to `~/buildroot-2020.02`.
+
+Clone this repo to your host in a separate folder than Buildroot:
+
+```sh
+git clone git@github.com:unframework/licheepi-nano-buildroot.git ~/licheepi-nano-buildroot
+
+# also ensure scripts are executable
+chmod a+x ~/licheepi-nano-buildroot/board/licheepi_nano/*.sh
+```
+
+Merge toolchain settings from `licheepi_nano_sdk_defconfig` helper into main `licheepi_nano_defconfig`. This is unfortunately complex because I split out the two as separate Docker build stages.
+
+Install build dependencies. For example, on Ubuntu:
+
+```sh
 apt-get update
 apt-get install -qy \
   bc \
@@ -79,26 +100,33 @@ apt-get install -qy \
   unzip \
   wget \
   whiptail
+```
 
-# set locale for the toolchain
+Set locale for the toolchain:
+
+```sh
 update-locale LC_ALL=C
+```
 
-# go inside the Buildroot folder and run configuration
-# (change the BR2_EXTERNAL value to point to the cloned repo folder)
-cd ./buildroot-2020.02
-BR2_EXTERNAL="$PWD/licheepi-nano-buildroot" \
-  make licheepi_nano_defconfig
+Go inside the Buildroot folder and run configuration tasks (`BR2_EXTERNAL` envvar points to the cloned folder of this repo):
 
-# optional - change/add packages as needed, but don't forget to update your saved defconfig
+```sh
+cd ~/buildroot-2020.02
+BR2_EXTERNAL=~/licheepi-nano-buildroot make licheepi_nano_defconfig
+
+# optional - change/add packages as needed, but don't forget to commit your saved defconfig in Git
 make menuconfig
+```
 
-# run the build!
+Run the build!
+
+```sh
 make
 ```
 
 Note: you may try using an external toolchain to speed up the build, but I did not have much success with that (tried Linaro GCC 7.5, issue with bundled glibc?).
 
-A successful build will produce a `output/images` folder inside Buildroot folder. That folder contains a file `sdcard.img` that can now be written to the bootable SD card.
+A successful build will produce an `output/images` folder inside Buildroot folder. That folder contains a file `sdcard.img` that can now be written to the bootable SD card.
 
 ## Write Bootable Image to SD Card
 
