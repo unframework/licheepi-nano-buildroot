@@ -1,4 +1,8 @@
 #
+# Main Buildroot config file for LicheePi Nano
+#
+
+#
 # ARMv5 compilation target
 #
 BR2_arm=y
@@ -21,12 +25,20 @@ BR2_arm926t=y
 BR2_ENABLE_DEBUG=y
 
 #
-# Internal Buildroot toolchain, with headers matching custom kernel
+# Buildroot toolchain defined as external tarball
 #
-BR2_TOOLCHAIN_BUILDROOT_GLIBC=y
-BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_4=y
-BR2_PACKAGE_GLIBC_UTILS=y
-BR2_TOOLCHAIN_BUILDROOT_CXX=y
+BR2_TOOLCHAIN_BUILDROOT=n
+BR2_TOOLCHAIN_EXTERNAL=y
+BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
+BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
+BR2_TOOLCHAIN_EXTERNAL_URL="file:///root/arm-buildroot-linux-gnueabi_sdk-buildroot.tar.gz"
+BR2_TOOLCHAIN_EXTERNAL_GCC_8=y
+BR2_TOOLCHAIN_EXTERNAL_HEADERS_5_4=y
+BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC=y
+BR2_TOOLCHAIN_EXTERNAL_CXX=y
+BR2_TOOLCHAIN_EXTERNAL_WCHAR=y
+BR2_TOOLCHAIN_EXTERNAL_LOCALE=y
+BR2_TOOLCHAIN_EXTERNAL_HAS_SSP=y
 
 #
 # OS name and login settings
@@ -39,14 +51,18 @@ BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200=y
 
 #
 # Linux kernel customized for the board
+# (using tarball download as it is much faster than Git)
 #
 BR2_LINUX_KERNEL=y
-BR2_LINUX_KERNEL_CUSTOM_GIT=y
+BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
+# BR2_LINUX_KERNEL_CUSTOM_GIT=y
 
 # @unframework Linux fork and tag
 # (cherry-picked from Lichee-Pi Linux fork nano-5.2-flash branch as of 2021-03-06)
-BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/unframework/linux"
-BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="v5.11-nano-3"
+BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="https://github.com/unframework/linux/archive/v5.11-nano-3/v5.11-nano-3.tar.gz"
+BR2_LINUX_KERNEL_VERSION="v5.11-nano-3"
+# BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/unframework/linux"
+# BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="v5.11-nano-3"
 
 # original Lichee-Pi Linux fork and branch without Flash-specific config changes
 # BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/linux"

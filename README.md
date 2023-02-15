@@ -4,104 +4,141 @@
 
 [Lichee Pi Nano](http://nano.lichee.pro/index.html) ([English article](https://www.cnx-software.com/2018/08/17/licheepi-nano-cheap-sd-card-sized-linux-board/)) is a very small single-board computer that is about the size of an SD card. It can run Linux. There is a good amount of official documentation on the [original manufacturer site](http://nano.lichee.pro/get_started/first_eye.html) (in Chinese, but easily readable thanks to Google Translate). However, the tooling used to build the full card/SPI-Flash images is mostly made up of custom shell scripts, and is not always easy to extend or maintain.
 
-This repository contains a Buildroot config extension that allows all of those build steps to be handled via a single Buildroot `make` command. That means fully building the U-Boot image, Linux kernel, the rootfs image and the final partitioned binary image for flashing onto the bootable SD card (SPI-Flash support is possible but not handled here yet).
+This repository contains a Buildroot config extension that allows all of those build steps to be handled via a single Buildroot `make` command. That means fully building the U-Boot image, Linux kernel, the rootfs image and the final partitioned binary image for flashing onto the bootable micro SD card (I did not finish the work on SPI-Flash boot image builds yet).
 
 All the configuration is packaged as a `BR2_EXTERNAL` Buildroot extension to avoid the need to fork the entire Buildroot repo. You can fork this project or integrate it as a Git subtree to customize your own OS build on top of it as needed.
 
-This effort heavily borrowed from the work done by the FunKey Zero project: https://github.com/Squonk42/buildroot-licheepi-zero/. The latter targets Lichee Pi Zero, a sibling board to the Nano, but I was able to adapt it for use with Nano, and also converted the content to be a `BR2_EXTERNAL` extension rather than a full Buildroot fork.
+The build can be run inside [Docker](Dockerfile) on Windows/Mac, or directly in your Linux host as well.
 
 The config files should be reasonably readable, e.g. here is the main Buildroot defconfig file: [configs/licheepi_nano_defconfig](configs/licheepi_nano_defconfig). You will most likely need to update the Linux DTS (device tree) file to match your board usage, for which you can edit [suniv-f1c100s-licheepi-nano-custom.dts](board/licheepi_nano/suniv-f1c100s-licheepi-nano-custom.dts). Sample peripheral descriptions are listed in comments there - uncomment and modify what you need. This custom DTS file includes the original [suniv-f1c100s-licheepi-nano.dts](https://github.com/unframework/linux/blob/nano-5.11/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts) in the kernel tree, so you don't need to fork the kernel or duplicate code to make your local customizations. I may also set up an equivalent customizable U-Boot DTS file in the future.
 
-Please also check out https://github.com/florpor/licheepi-nano which predates this repo but somehow I did not stumble upon until I finished my own config/porting/rebasing. Please consult that repo for possibly newer versions/patches/etc!
+This effort heavily borrowed from the work done by the FunKey Zero project: https://github.com/Squonk42/buildroot-licheepi-zero/. The latter targets Lichee Pi Zero, a sibling board to the Nano, but I was able to adapt it for use with Nano, and also converted the content to be a `BR2_EXTERNAL` extension rather than a full Buildroot fork.
+
+Also check out https://github.com/florpor/licheepi-nano: that work was done prior to mine but I somehow didn't find it until later, oops.
 
 ## Dependencies
 
-- Vagrant (if building inside the VM)
-  - vagrant-vbguest plugin
-  - vagrant-disksize plugin
-- Ubuntu Bionic or similar (see Vagrant VM)
-- Buildroot 2020.02 (auto-downloaded by VM, otherwise see [project downloads page](https://buildroot.org/download.html))
+For Docker-based builds the needed prerequisites are installed automatically. Multi-stage syntax support is needed (available since Docker Engine 17.05 release in 2017). BuildKit support is optional for extra convenience.
 
-Buildroot takes care of downloading any further dependencies automatically. Please note that I tested this only on the `2020.02` version of Buildroot so far.
+For manual build in your Linux host, ensure you have:
+
+- OS equivalent to Ubuntu Bionic or newer
+- Buildroot 2020.02 (see [project downloads page](https://buildroot.org/download.html))
+
+Buildroot takes care of downloading any further dependencies. Please note that I have not tested Buildroot versions other than `2020.02`.
 
 ## Building the Image
 
-First, clone this repo:
+The easiest way is using Docker (on Windows/MacOS/Linux).
+
+First, clone this repo to your host:
 
 ```sh
 git clone git@github.com:unframework/licheepi-nano-buildroot.git
 ```
 
-If not using Vagrant, ensure build scripts are executable:
+Run the image build command:
 
 ```sh
-chmod a+x licheepi-nano-buildroot/board/licheepi_nano/*.sh
+docker build --output type=tar,dest=- . | tar x -C dist
 ```
 
-If using Vagrant VM to perform the build:
+This may take an hour, depending on your host machine. The built image will be available in `dist/sdcard.img` - you can write this to your bootable micro SD card.
 
-```sh
-cd licheepi-nano-buildroot # location of this repo's files
+If you do not have Docker BuildKit or if you want direct access to the workspace image (to e.g. run some extra commands in a container) then run:
 
-# install required plugins
-vagrant plugin install vagrant-vbguest
-vagrant plugin install vagrant-disksize
-
-vagrant up
-vagrant ssh
+```ssh
+docker build --target main -t licheepi-nano-buildroot .
 ```
 
-Otherwise, download Buildroot and extract it into a folder that is separate from this repo's files. Please note that I have not tested it with newer Buildroot versions - you will likely need to [tweak some settings](https://github.com/unframework/licheepi-nano-buildroot/issues/18).
+## Manual build (on Linux)
 
-Before building, install these Ubuntu packages:
+This assumes you are in your home folder.
+
+[Download Buildroot](https://buildroot.org/download.html) and extract it to `~/buildroot-2020.02`.
+
+Clone this repo to your host in a separate folder than Buildroot:
 
 ```sh
-sudo apt-get install swig fakeroot devscripts python3-dev python3-distutils libssl-dev
+git clone git@github.com:unframework/licheepi-nano-buildroot.git ~/licheepi-nano-buildroot
+
+# also ensure scripts are executable
+chmod a+x ~/licheepi-nano-buildroot/board/licheepi_nano/*.sh
 ```
 
-If there are still error messages during later build, try installing these (sorry, did not clean up the list yet, some might be unnecessary):
+Merge toolchain settings from `licheepi_nano_sdk_defconfig` helper into main `licheepi_nano_defconfig`. This is unfortunately complex because I split out the two as separate Docker build stages.
+
+Install build dependencies. For example, on Ubuntu:
 
 ```sh
-sudo apt-get install -y chrpath gawk texinfo libsdl1.2-dev whiptail diffstat cpio
+apt-get update
+apt-get install -qy \
+  bc \
+  bison \
+  build-essential \
+  bzr \
+  chrpath \
+  cpio \
+  cvs \
+  devscripts \
+  diffstat \
+  dosfstools \
+  fakeroot \
+  flex \
+  gawk \
+  git \
+  libncurses5-dev \
+  libssl-dev \
+  locales \
+  python3-dev \
+  python3-distutils \
+  python3-setuptools \
+  rsync \
+  subversion \
+  swig \
+  texinfo \
+  unzip \
+  wget \
+  whiptail
 ```
 
-Now, if you are using Vagrant your main Buildroot checkout will be in `/home/vagrant/buildroot-2020.02`. Note that it is not the same folder as the location of this board-specific config repo (which would be `/vagrant` if using the Vagrant VM). The Buildroot folder will be the main spot where actual compilation happens, so chdir inside it:
+Set locale for the toolchain:
 
 ```sh
-# if not using Vagrant VM, cd <your_buildroot_folder>
-cd /home/vagrant/buildroot-2020.02
+update-locale LC_ALL=C
 ```
 
-Then, generate initial build configuration:
+Go inside the Buildroot folder and run configuration tasks (`BR2_EXTERNAL` envvar points to the cloned folder of this repo):
 
 ```sh
-# if not using Vagrant VM, change "/vagrant" to be location of this repo's files
-BR2_EXTERNAL=/vagrant make licheepi_nano_defconfig
-```
+cd ~/buildroot-2020.02
+BR2_EXTERNAL=~/licheepi-nano-buildroot make licheepi_nano_defconfig
 
-The above generates a `.config` file in the Buildroot checkout folder - this is the build configuration for `make` later on. Customize it if needed:
-
-```sh
+# optional - change/add packages as needed, but don't forget to commit your saved defconfig in Git
 make menuconfig
 ```
 
-Proceed with the build:
+Run the build!
 
 ```sh
 make
 ```
 
-The build may take 1.5 hours on a decent machine, or longer. For a faster build, try changing configuration to use external toolchain. I have tried building with Linaro GCC 7.5, but ran into crashes at time of `/sbin/init` invocation (issue with bundled glibc?).
+Note: you may try using an external toolchain to speed up the build, but I did not have much success with that (tried Linaro GCC 7.5, issue with bundled glibc?).
 
-A successful build will produce a `output/images` folder. That folder contains a `sdcard.img` file that can now be written to the bootable SD card. Note that if Vagrant VM is used, the `output/images/sdcard.img` file first needs to be copied back out to the host machine, since it is unlikely that your VM has direct access to the SD card writer.
+A successful build will produce an `output/images` folder inside Buildroot folder. That folder contains a file `sdcard.img` that can now be written to the bootable SD card.
+
+## Write Bootable Image to SD Card
+
+On Windows, use Rufus or Balena Etcher to write the bootable SD card image (`sdcard.img`). Typical image size is at least 18-20Mb, which should fit on most modern SD cards.
 
 Example command to write image to SD card on Linux host:
 
 ```sh
-sudo dd if=YOUR_HOST_FOLDER/sdcard.img of=DEVICE # e.g. /dev/sd?, etc
+sudo dd if=output/images/sdcard.img of=DEVICE # e.g. /dev/sd?, etc
 ```
 
-On Windows, Rufus or Balena Etcher can be used, or another utility like that.
+Then, plug in the micro SD card into your Lichee Nano and turn it on!
 
 ## Linux and U-Boot Versions
 
