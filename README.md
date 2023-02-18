@@ -27,7 +27,7 @@ For manual build in your Linux host, ensure you have:
 
 Buildroot takes care of downloading any further dependencies. Please note that I have not tested Buildroot versions other than `2020.02`.
 
-## Building the Image
+## Building the Base Image
 
 The easiest way is using Docker (on Windows/MacOS/Linux).
 
@@ -40,8 +40,8 @@ git clone git@github.com:unframework/licheepi-nano-buildroot.git
 Run the image build command:
 
 ```sh
-docker build --output type=tar,dest=- . | tar x -C dist
-```
+docker build -f Dockerfile.base --target main -t licheepi_nano_buildroot .
+``` z
 
 This may take an hour, depending on your host machine. The built image will be available in `dist/sdcard.img` - you can write this to your bootable micro SD card.
 
