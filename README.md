@@ -45,10 +45,10 @@ docker build -f Dockerfile.base --target main -t licheepi_nano_buildroot .
 
 This may take an hour, depending on your host machine. The built image will be available in `dist/sdcard.img` - you can write this to your bootable micro SD card.
 
-If you do not have Docker BuildKit or if you want direct access to the workspace image (to e.g. run some extra commands in a container) then run:
+Then build local changes based on base:
 
-```ssh
-docker build --target main -t licheepi-nano-buildroot .
+```sh
+docker build --output type=tar,dest=- . | tar x -C dist
 ```
 
 ## Manual build (on Linux)
