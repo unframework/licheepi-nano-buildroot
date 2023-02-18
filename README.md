@@ -40,7 +40,7 @@ git clone git@github.com:unframework/licheepi-nano-buildroot.git
 Run the image build command:
 
 ```sh
-docker build -f Dockerfile.base --target main -t licheepi_nano_buildroot .
+docker build -f Dockerfile.base --target main -t unframework/licheepi-nano-buildroot .
 ```
 
 This may take an hour, depending on your host machine. The built image will be available in `dist/sdcard.img` - you can write this to your bootable micro SD card.
