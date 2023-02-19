@@ -27,7 +27,7 @@ For manual build in your Linux host, ensure you have:
 
 Buildroot takes care of downloading any further dependencies. Please note that I have not tested Buildroot versions other than `2020.02`.
 
-## Building the Base Image
+## Building the Image
 
 The easiest way is using Docker (on Windows/MacOS/Linux).
 
@@ -37,19 +37,13 @@ First, clone this repo to your host:
 git clone git@github.com:unframework/licheepi-nano-buildroot.git
 ```
 
-Run the image build command:
-
-```sh
-docker build -f Dockerfile.base --target main -t unframework/licheepi-nano-buildroot .
-```
-
-This may take an hour, depending on your host machine. The built image will be available in `dist/sdcard.img` - you can write this to your bootable micro SD card.
-
-Then build local changes based on base:
+Then build local changes based on prepared Docker Hub base image:
 
 ```sh
 docker build --output type=tar,dest=- . | tar x -C dist
 ```
+
+The built image will be available in `dist/sdcard.img` - you can write this to your bootable micro SD card.
 
 ## Manual build (on Linux)
 
@@ -139,6 +133,16 @@ sudo dd if=output/images/sdcard.img of=DEVICE # e.g. /dev/sd?, etc
 ```
 
 Then, plug in the micro SD card into your Lichee Nano and turn it on!
+
+## Building the Base Image
+
+Run the image build command:
+
+```sh
+docker build -f Dockerfile.base --target main -t unframework/licheepi-nano-buildroot:$(git rev-parse --short HEAD) .
+```
+
+This may take an hour, depending on your host machine.
 
 ## Linux and U-Boot Versions
 
