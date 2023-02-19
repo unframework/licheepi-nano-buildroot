@@ -95,4 +95,4 @@ RUN make
 
 # expose built image files in standalone root folder
 FROM scratch AS dist
-COPY --from=local /root/buildroot/output/images/ .
+COPY --from=main /root/buildroot/output/images/ .
