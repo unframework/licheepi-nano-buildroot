@@ -1,3 +1,7 @@
+# use this to iterate on changes to config without rebuilding the entire
+# image from scratch; ensure to clean the right stamps/folders to correctly
+# trigger rebuild with Buildroot
+
 ARG BASE_VERSION=latest
 
 FROM unframework/licheepi-nano-buildroot:$BASE_VERSION AS local
@@ -12,10 +16,12 @@ COPY \
     external.mk \
     ./
 
-# rebuild
+# reset Buildroot config and trigger Linux kernel rebuild
 WORKDIR /root/buildroot
 RUN BR2_EXTERNAL=/root/licheepi-nano make licheepi_nano_defconfig
 RUN cd output/build/linux-custom/ && rm .stamp_built .stamp_*_installed
+
+# re-run build
 RUN make
 
 # expose built image files in standalone root folder
