@@ -61,8 +61,6 @@ BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
 # (cherry-picked from Lichee-Pi Linux fork nano-5.2-flash branch as of 2021-03-06)
 BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="https://github.com/unframework/linux/archive/v5.11-nano-4/v5.11-nano-4.tar.gz"
 BR2_LINUX_KERNEL_VERSION="v5.11-nano-4"
-# BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/unframework/linux"
-# BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="v5.11-nano-3"
 
 # original Lichee-Pi Linux fork and branch without Flash-specific config changes
 # BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/Lichee-Pi/linux"
