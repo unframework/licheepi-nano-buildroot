@@ -92,3 +92,7 @@ RUN make uboot-source
 
 # run the main build command
 RUN make
+
+# expose built image files in standalone root folder
+FROM scratch AS dist
+COPY --from=local /root/buildroot/output/images/ .

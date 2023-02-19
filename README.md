@@ -37,13 +37,15 @@ First, clone this repo to your host:
 git clone git@github.com:unframework/licheepi-nano-buildroot.git
 ```
 
-Then build local changes based on prepared Docker Hub base image:
+Run the image build command:
 
 ```sh
 docker build --output type=tar,dest=- . | tar x -C dist
 ```
 
-The built image will be available in `dist/sdcard.img` - you can write this to your bootable micro SD card.
+The full build may take up to an hour, depending on your host machine.
+
+The built image will be available in `dist/sdcard.img` - you can write this to your bootable micro SD card (see below).
 
 ## Manual build (on Linux)
 
@@ -134,15 +136,24 @@ sudo dd if=output/images/sdcard.img of=DEVICE # e.g. /dev/sd?, etc
 
 Then, plug in the micro SD card into your Lichee Nano and turn it on!
 
-## Building the Base Image
+## Iterating on Base Image
 
-Run the image build command:
+For faster iteration without restarting the entire build process from scratch, use `Dockerfile.dev`. It pulls in an existing Docker image (pre-built by repo maintainer), re-copies the defconfig and board folder from local workspace into it, and triggers a Buildroot rebuild.
+
+The pre-built base image already has a lot of the intermediate compiled files, so the rebuild should be much faster (though sometimes Buildroot needs extra nudges to notice config changes). This is helpful when tweaking and iterating on Linux configuration, target packages, etc.
+
+Dev mode build command:
 
 ```sh
 docker build -f Dockerfile.base --target main -t unframework/licheepi-nano-buildroot:$(git rev-parse --short HEAD) .
 ```
 
-This may take an hour, depending on your host machine.
+Here is how the base image is generated (these commands are just for the repo maintainer):
+
+```sh
+docker build -f Dockerfile --target main -t unframework/licheepi-nano-buildroot:$(git rev-parse --short HEAD) .
+docker push unframework/licheepi-nano-buildroot:$(git rev-parse --short HEAD)
+```
 
 ## Linux and U-Boot Versions
 
