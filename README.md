@@ -2,7 +2,7 @@
 
 ![Lichee Pi Nano with LCD screen](licheepi-nano-lcd.jpg)
 
-[Lichee Pi Nano](http://nano.lichee.pro/index.html) ([English article](https://www.cnx-software.com/2018/08/17/licheepi-nano-cheap-sd-card-sized-linux-board/)) is a very small single-board computer that is about the size of an SD card. It can run Linux. There is a good amount of official documentation on the [original manufacturer site](http://nano.lichee.pro/get_started/first_eye.html) (in Chinese, but easily readable thanks to Google Translate). However, the tooling used to build the full card/SPI-Flash images is mostly made up of custom shell scripts, and is not always easy to extend or maintain.
+[Lichee Pi Nano](https://wiki.sipeed.com/soft/Lichee/zh/Nano-Doc-Backup/get_started/first_eye.html) ([English article](https://www.cnx-software.com/2018/08/17/licheepi-nano-cheap-sd-card-sized-linux-board/), [old site](http://nano.lichee.pro/index.html)) is a very small single-board computer that is about the size of an SD card. It can run Linux. There is a good amount of official documentation on the [original manufacturer site](http://nano.lichee.pro/get_started/first_eye.html) (in Chinese, but easily readable thanks to Google Translate). However, the tooling used to build the full card/SPI-Flash images is mostly made up of custom shell scripts, and is not always easy to extend or maintain.
 
 This repository contains a Buildroot config extension that allows all of those build steps to be handled via a single Buildroot `make` command. That means fully building the U-Boot image, Linux kernel, the rootfs image and the final partitioned binary image for flashing onto the bootable micro SD card (I did not finish the work on SPI-Flash boot image builds yet).
 
@@ -43,13 +43,9 @@ Run the image build command:
 docker build --output type=tar,dest=- . | tar x -C dist
 ```
 
-This may take an hour, depending on your host machine. The built image will be available in `dist/sdcard.img` - you can write this to your bootable micro SD card.
+The full build may take up to an hour, depending on your host machine.
 
-If you do not have Docker BuildKit or if you want direct access to the workspace image (to e.g. run some extra commands in a container) then run:
-
-```ssh
-docker build --target main -t licheepi-nano-buildroot .
-```
+The built image will be available in `dist/sdcard.img` - you can write this to your bootable micro SD card (see below).
 
 ## Manual build (on Linux)
 
@@ -139,6 +135,25 @@ sudo dd if=output/images/sdcard.img of=DEVICE # e.g. /dev/sd?, etc
 ```
 
 Then, plug in the micro SD card into your Lichee Nano and turn it on!
+
+## Iterating on Base Image
+
+For faster iteration without restarting the entire build process from scratch, use `Dockerfile.dev`. It pulls in an existing Docker image (pre-built by repo maintainer), re-copies the defconfig and board folder from local workspace into it, and triggers a Buildroot rebuild.
+
+The pre-built base image already has a lot of the intermediate compiled files, so the rebuild should be much faster (though sometimes Buildroot needs extra nudges to notice config changes). This is helpful when tweaking and iterating on Linux configuration, target packages, etc.
+
+Dev mode build command:
+
+```sh
+docker build -f Dockerfile.dev --output type=tar,dest=- . | tar x -C dist
+```
+
+Here is how the base image is generated (these commands are just for the repo maintainer):
+
+```sh
+docker build -f Dockerfile --target main -t unframework/licheepi-nano-buildroot:latest -t unframework/licheepi-nano-buildroot:$(git rev-parse --short HEAD) .
+docker push unframework/licheepi-nano-buildroot:latest unframework/licheepi-nano-buildroot:$(git rev-parse --short HEAD)
+```
 
 ## Linux and U-Boot Versions
 
