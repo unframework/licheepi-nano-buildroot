@@ -1,4 +1,6 @@
-FROM unframework/licheepi-nano-buildroot AS local
+ARG BASE_VERSION=latest
+
+FROM unframework/licheepi-nano-buildroot:$BASE_VERSION AS local
 
 # expose built image files in standalone root folder
 FROM scratch AS localout
