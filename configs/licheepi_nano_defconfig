@@ -50,6 +50,11 @@ BR2_TARGET_GENERIC_GETTY_PORT="/dev/ttyS0"
 BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200=y
 
 #
+# Custom file additions
+#
+BR2_ROOTFS_OVERLAY="$(BR2_EXTERNAL_LICHEEPI_NANO_PATH)/board/licheepi_nano/rootfs-overlay"
+
+#
 # Linux kernel customized for the board
 # (using tarball download as it is much faster than Git)
 #
