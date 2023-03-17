@@ -20,6 +20,7 @@ COPY \
 WORKDIR /root/buildroot
 RUN BR2_EXTERNAL=/root/licheepi-nano make licheepi_nano_defconfig
 RUN cd output/build/linux-custom/ && rm .stamp_built .stamp_*_installed
+RUN cd output/build/linux-firmware-20190717/ && rm .stamp_built .stamp_*_installed
 
 # re-run build
 RUN make

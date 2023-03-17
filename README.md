@@ -12,6 +12,8 @@ The build can be run inside [Docker](Dockerfile) on Windows/Mac, or directly in 
 
 The config files should be reasonably readable, e.g. here is the main Buildroot defconfig file: [configs/licheepi_nano_defconfig](configs/licheepi_nano_defconfig). You will most likely need to update the Linux DTS (device tree) file to match your board usage, for which you can edit [suniv-f1c100s-licheepi-nano-custom.dts](board/licheepi_nano/suniv-f1c100s-licheepi-nano-custom.dts). Sample peripheral descriptions are listed in comments there - uncomment and modify what you need. This custom DTS file includes the original [suniv-f1c100s-licheepi-nano.dts](https://github.com/unframework/linux/blob/nano-5.11/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts) in the kernel tree, so you don't need to fork the kernel or duplicate code to make your local customizations. I may also set up an equivalent customizable U-Boot DTS file in the future.
 
+More customization is available by changing other files in the `board` and `configs` directories, such as the kernel boot command, kernel defconfig and SD image layout. There is also a preconfigured rootfs overlay folder, ready to populate.
+
 This effort heavily borrowed from the work done by the FunKey Zero project: https://github.com/Squonk42/buildroot-licheepi-zero/. The latter targets Lichee Pi Zero, a sibling board to the Nano, but I was able to adapt it for use with Nano, and also converted the content to be a `BR2_EXTERNAL` extension rather than a full Buildroot fork.
 
 Also check out https://github.com/florpor/licheepi-nano: that work was done prior to mine but I somehow didn't find it until later, oops.
@@ -136,7 +138,7 @@ sudo dd if=output/images/sdcard.img of=DEVICE # e.g. /dev/sd?, etc
 
 Then, plug in the micro SD card into your Lichee Nano and turn it on!
 
-## Iterating on Base Image
+## Iterating on the Base Image
 
 For faster iteration without restarting the entire build process from scratch, use `Dockerfile.dev`. It pulls in an existing Docker image (pre-built by repo maintainer), re-copies the defconfig and board folder from local workspace into it, and triggers a Buildroot rebuild.
 
