@@ -1,7 +1,7 @@
 FROM ubuntu:18.04 AS base
 
 # Buildroot release version
-ARG BUILDROOT_RELEASE=2020.02
+ARG BUILDROOT_RELEASE=2023.02
 
 ENV DEBIAN_FRONTEND=noninteractive
 
