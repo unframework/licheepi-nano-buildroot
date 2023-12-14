@@ -11,16 +11,16 @@ WORKDIR /root/licheepi-nano
 COPY board/ board/
 COPY configs/ configs/
 COPY \
-    Config.in \
-    external.desc \
-    external.mk \
-    ./
+  Config.in \
+  external.desc \
+  external.mk \
+  ./
 
 # reset Buildroot config and trigger Linux kernel rebuild
 WORKDIR /root/buildroot
 RUN BR2_EXTERNAL=/root/licheepi-nano make licheepi_nano_defconfig
 RUN cd output/build/linux-custom/ && rm .stamp_built .stamp_*_installed
-RUN cd output/build/linux-firmware-20190717/ && rm .stamp_built .stamp_*_installed
+RUN cd output/build/linux-firmware-20221214/ && rm .stamp_built .stamp_*_installed
 
 # re-run build
 RUN make
