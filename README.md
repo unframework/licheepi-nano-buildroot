@@ -154,7 +154,8 @@ Here is how the base image is generated (these commands are just for the repo ma
 
 ```sh
 docker build -f Dockerfile --target main -t unframework/licheepi-nano-buildroot:latest -t unframework/licheepi-nano-buildroot:$(git rev-parse --short HEAD) .
-docker push unframework/licheepi-nano-buildroot:latest unframework/licheepi-nano-buildroot:$(git rev-parse --short HEAD)
+docker push unframework/licheepi-nano-buildroot:$(git rev-parse --short HEAD)
+docker push unframework/licheepi-nano-buildroot:latest
 ```
 
 ## Linux and U-Boot Versions
