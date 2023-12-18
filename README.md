@@ -31,7 +31,7 @@ Buildroot takes care of downloading any further dependencies. Please note that I
 
 ## Building the Image
 
-The easiest way is using Docker (on Windows/MacOS/Linux).
+The easiest way is using Docker (on Windows/MacOS/Linux). If your Docker is older than v23, ensure that you have [BuildKit enabled](https://docs.docker.com/build/buildkit/#getting-started).
 
 First, clone this repo to your host:
 
