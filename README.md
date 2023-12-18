@@ -42,6 +42,7 @@ git clone git@github.com:unframework/licheepi-nano-buildroot.git
 Run the image build command:
 
 ```sh
+mkdir -p dist # destination folder should exist before untarring
 docker build --output type=tar,dest=- . | tar x -C dist
 ```
 
