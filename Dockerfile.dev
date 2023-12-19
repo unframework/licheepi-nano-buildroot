@@ -11,10 +11,10 @@ WORKDIR /root/licheepi-nano
 COPY board/ board/
 COPY configs/ configs/
 COPY \
-  Config.in \
-  external.desc \
-  external.mk \
-  ./
+    Config.in \
+    external.desc \
+    external.mk \
+    ./
 
 # reset Buildroot config and trigger Linux kernel rebuild
 WORKDIR /root/buildroot
