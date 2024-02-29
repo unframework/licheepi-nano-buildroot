@@ -39,16 +39,21 @@ First, clone this repo to your host:
 git clone git@github.com:unframework/licheepi-nano-buildroot.git
 ```
 
-Run the image build command:
+There are two options available - fast build using the [prepared Docker Hub images](https://hub.docker.com/r/unframework/licheepi-nano-buildroot) or from scratch (takes 1-2 hours or more).
+
+Fast build:
 
 ```sh
-mkdir -p dist # destination folder should exist before untarring
-docker build --output type=tar,dest=- . | tar x -C dist
+docker build --output type=tar,dest=- . | (mkdir -p dist && tar x -C dist)
 ```
 
-The full build may take up to an hour, depending on your host machine.
-
 The built image will be available in `dist/sdcard.img` - you can write this to your bootable micro SD card (see below).
+
+Full rebuild from scratch:
+
+```sh
+docker build -f Dockerfile.base --output type=tar,dest=- . | (mkdir -p dist && tar x -C dist)
+```
 
 ## Manual build (on Linux)
 
@@ -141,20 +146,39 @@ Then, plug in the micro SD card into your Lichee Nano and turn it on!
 
 ## Iterating on the Base Image
 
-For faster iteration without restarting the entire build process from scratch, use `Dockerfile.dev`. It pulls in an existing Docker image (pre-built by repo maintainer), re-copies the defconfig and board folder from local workspace into it, and triggers a Buildroot rebuild.
+The "fast build" Docker command allows tweaking config files in `board` and `configs` without having to rebuild everything. First it pulls the [pre-built Docker Hub image](https://hub.docker.com/r/unframework/licheepi-nano-buildroot), re-copies the defconfig and board folder from local workspace into it, and runs the `make` command once again.
 
-The pre-built base image already has a lot of the intermediate compiled files, so the rebuild should be much faster (though sometimes Buildroot needs extra nudges to notice config changes). This is helpful when tweaking and iterating on Linux configuration, target packages, etc.
+Note that certain config file changes will not automatically cause Buildroot to rebuild affected folders. Please see the Buildroot manual sections [Understanding when a full rebuild is necessary](https://buildroot.org/downloads/manual/manual.html#full-rebuild) and [Understanding how to rebuild packages](https://buildroot.org/downloads/manual/manual.html#rebuild-pkg).
 
-Dev mode build command:
+It's very convenient to run the intermediate Docker image and inspect the build folder, run `make menuconfig`, etc:
 
 ```sh
-docker build -f Dockerfile.dev --output type=tar,dest=- . | tar x -C dist
+docker build --target main -t licheepi-nano-tmp
+docker run -it licheepi-nano-tmp /bin/bash
 ```
 
-Here is how the base image is generated (these commands are just for the repo maintainer):
+Just don't forget to e.g. carry out any resulting `.config` file changes back into your source folder as needed.
+
+Once you are happy with your own additions, you can run a full Docker image rebuild and tag the result:
 
 ```sh
-docker build -f Dockerfile.base --target main -t unframework/licheepi-nano-buildroot:latest -t unframework/licheepi-nano-buildroot:$(git rev-parse --short HEAD) .
+docker build -f Dockerfile.base --target main -t licheepi-nano-mybase:latest .
+```
+
+And then use that image as the base for generating the SD image as well as further config iterations:
+
+```sh
+docker build \
+  --build-arg="BASE_IMAGE=licheepi-nano-mybase" \
+  --output type=tar,dest=- . \
+  | (mkdir -p dist && tar x -C dist)
+```
+
+For reference, here is how the base image is generated and published (these are the commands I run as the repo maintainer):
+
+```sh
+docker build -f Dockerfile.base --target main -t unframework/licheepi-nano-buildroot:$(git rev-parse --short HEAD) .
+docker build -f Dockerfile.base --target main -t unframework/licheepi-nano-buildroot:latest .
 docker push unframework/licheepi-nano-buildroot:$(git rev-parse --short HEAD)
 docker push unframework/licheepi-nano-buildroot:latest
 ```

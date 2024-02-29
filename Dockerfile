@@ -2,9 +2,10 @@
 # image from scratch; ensure to clean the right stamps/folders to correctly
 # trigger rebuild with Buildroot
 
+ARG BASE_IMAGE=unframework/licheepi-nano-buildroot
 ARG BASE_VERSION=latest
 
-FROM unframework/licheepi-nano-buildroot:$BASE_VERSION AS local
+FROM $BASE_IMAGE:$BASE_VERSION AS local
 
 # copy newest version of local files
 WORKDIR /root/licheepi-nano
