@@ -4,13 +4,13 @@
 
 [Lichee Pi Nano](https://wiki.sipeed.com/soft/Lichee/zh/Nano-Doc-Backup/get_started/first_eye.html) ([English article](https://www.cnx-software.com/2018/08/17/licheepi-nano-cheap-sd-card-sized-linux-board/), [old site](http://nano.lichee.pro/index.html)) is a very small single-board computer that is about the size of an SD card. It can run Linux. There is a good amount of official documentation on the [original manufacturer site](http://nano.lichee.pro/get_started/first_eye.html) (in Chinese, but easily readable thanks to Google Translate). However, the tooling used to build the full card/SPI-Flash images is mostly made up of custom shell scripts, and is not always easy to extend or maintain.
 
-This repository contains a Buildroot config extension that allows all of those build steps to be handled via a single Buildroot `make` command. That means fully building the U-Boot image, Linux kernel, the rootfs image and the final partitioned binary image for flashing onto the bootable micro SD card (I did not finish the work on SPI-Flash boot image builds yet).
+This repository contains a Buildroot-based Linux image build for the Lichee Pi Nano. It compiles a U-Boot image, Linux kernel, the rootfs image and the final partitioned binary image for flashing onto the bootable micro SD card (note: SPI-Flash boot image builds are possible but I did not get a chance to try them yet).
 
-All the configuration is packaged as a `BR2_EXTERNAL` Buildroot extension to avoid the need to fork the entire Buildroot repo. You can fork this project or integrate it as a Git subtree to customize your own OS build on top of it as needed.
+All the custom configuration is packaged as a `BR2_EXTERNAL` Buildroot extension to avoid the need to fork the entire Buildroot repo. You can fork this project or integrate it as a Git subtree to customize your own OS build on top of it as needed.
 
-The build can be run inside [Docker](Dockerfile) on Windows/Mac, or directly in your Linux host as well.
+The build process uses [Docker](Dockerfile) for reproducibility and convenience. If you are an advanced Linux user you can set up your own build on your host machine by running the same commands as [Dockerfile.base].
 
-The config files should be reasonably readable, e.g. here is the main Buildroot defconfig file: [configs/licheepi_nano_defconfig](configs/licheepi_nano_defconfig). You will most likely need to update the Linux DTS (device tree) file to match your board usage, for which you can edit [suniv-f1c100s-licheepi-nano-custom.dts](board/licheepi_nano/suniv-f1c100s-licheepi-nano-custom.dts). Sample peripheral descriptions are listed in comments there - uncomment and modify what you need. This custom DTS file includes the original [suniv-f1c100s-licheepi-nano.dts](https://github.com/unframework/linux/blob/nano-5.11/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts) in the kernel tree, so you don't need to fork the kernel or duplicate code to make your local customizations. I may also set up an equivalent customizable U-Boot DTS file in the future.
+Explore the configuration and modify it at will: e.g. start with the main Buildroot defconfig file in [configs/licheepi_nano_defconfig](configs/licheepi_nano_defconfig). You will most likely need to update the Linux DTS (device tree) file to match your board usage, for which you can edit [suniv-f1c100s-licheepi-nano-custom.dts](board/licheepi_nano/suniv-f1c100s-licheepi-nano-custom.dts). Sample peripheral descriptions are listed in comments there - uncomment and modify what you need. This custom DTS file includes the original [suniv-f1c100s-licheepi-nano.dts](https://github.com/unframework/linux/blob/nano-5.11/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts) in the kernel tree, so you don't need to fork the kernel or duplicate code to make your local customizations. I may also set up an equivalent customizable U-Boot DTS file in the future.
 
 More customization is available by changing other files in the `board` and `configs` directories, such as the kernel boot command, kernel defconfig and SD image layout. There is also a preconfigured rootfs overlay folder, ready to populate.
 
@@ -20,14 +20,7 @@ Also check out https://github.com/florpor/licheepi-nano: that work was done prio
 
 ## Dependencies
 
-For Docker-based builds the needed prerequisites are installed automatically. Multi-stage syntax support is needed (available since Docker Engine 17.05 release in 2017). BuildKit support is optional for extra convenience.
-
-For manual build in your Linux host, ensure you have:
-
-- OS equivalent to Ubuntu Bionic or newer
-- Buildroot 2020.02 (see [project downloads page](https://buildroot.org/download.html))
-
-Buildroot takes care of downloading any further dependencies. Please note that I have not tested Buildroot versions other than `2020.02`.
+Builds are Docker-based: multi-stage syntax support is needed (available since Docker Engine 17.05 release in 2017). Docker BuildKit support is needed for direct `tar` file output but you can omit that and manually copy `sdcard.img` from the built Docker images.
 
 ## Building the Image
 
@@ -54,83 +47,6 @@ Full rebuild from scratch:
 ```sh
 docker build -f Dockerfile.base --output type=tar,dest=- . | (mkdir -p dist && tar x -C dist)
 ```
-
-## Manual build (on Linux)
-
-This assumes you are in your home folder.
-
-[Download Buildroot](https://buildroot.org/download.html) and extract it to `~/buildroot-2020.02`.
-
-Clone this repo to your host in a separate folder than Buildroot:
-
-```sh
-git clone git@github.com:unframework/licheepi-nano-buildroot.git ~/licheepi-nano-buildroot
-
-# also ensure scripts are executable
-chmod a+x ~/licheepi-nano-buildroot/board/licheepi_nano/*.sh
-```
-
-Merge toolchain settings from `licheepi_nano_sdk_defconfig` helper into main `licheepi_nano_defconfig`. This is unfortunately complex because I split out the two as separate Docker build stages.
-
-Install build dependencies. For example, on Ubuntu:
-
-```sh
-apt-get update
-apt-get install -qy \
-  bc \
-  bison \
-  build-essential \
-  bzr \
-  chrpath \
-  cpio \
-  cvs \
-  devscripts \
-  diffstat \
-  dosfstools \
-  fakeroot \
-  flex \
-  gawk \
-  git \
-  libncurses5-dev \
-  libssl-dev \
-  locales \
-  python3-dev \
-  python3-distutils \
-  python3-setuptools \
-  rsync \
-  subversion \
-  swig \
-  texinfo \
-  unzip \
-  wget \
-  whiptail
-```
-
-Set locale for the toolchain:
-
-```sh
-update-locale LC_ALL=C
-```
-
-Go inside the Buildroot folder and run configuration tasks (`BR2_EXTERNAL` envvar points to the cloned folder of this repo):
-
-```sh
-cd ~/buildroot-2020.02
-BR2_EXTERNAL=~/licheepi-nano-buildroot make licheepi_nano_defconfig
-
-# optional - change/add packages as needed, but don't forget to commit your saved defconfig in Git
-make menuconfig
-```
-
-Run the build!
-
-```sh
-make
-```
-
-Note: you may try using an external toolchain to speed up the build, but I did not have much success with that (tried Linaro GCC 7.5, issue with bundled glibc?).
-
-A successful build will produce an `output/images` folder inside Buildroot folder. That folder contains a file `sdcard.img` that can now be written to the bootable SD card.
 
 ## Write Bootable Image to SD Card
 
